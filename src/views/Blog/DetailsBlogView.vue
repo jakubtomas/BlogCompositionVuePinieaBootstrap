@@ -14,7 +14,7 @@
     </div>
   </div>
   <!--  -->
-  <div class="container">
+  <div v-if="blog" class="container">
     <h1>Details Blog</h1>
     <div class="d-flex justify-content-around me-2">
       <em>Autor {{ blog.author }}</em>
@@ -47,6 +47,7 @@
       </div>
     </div>
   </div>
+  <div v-if="!blog">This blog doesnt exist. Probably mistake.</div>
 </template>
 
 <script lang="ts">
@@ -118,6 +119,7 @@ export default defineComponent({
   background-color: white;
   border: 1px solid black;
   padding: 16px;
+  z-index: 9999 !important;
 }
 
 .popup-message {

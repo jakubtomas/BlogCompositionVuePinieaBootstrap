@@ -7,7 +7,7 @@
         <button type="button" @click="redirectToCreateBlog" class="btn btn-primary my-2">
           Create new blog
         </button>
-        <ul class="list-group">
+        <ul v-if="blogs" class="list-group">
           <li
             v-for="(blog, index) in blogs"
             :key="index"
