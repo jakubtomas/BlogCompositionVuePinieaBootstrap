@@ -33,6 +33,4 @@ export default defineComponent({
     };
   }
 });
-
-//const { alert } = storeToRefs(alertStore);
 </script>

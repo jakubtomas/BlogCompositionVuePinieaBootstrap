@@ -3,30 +3,38 @@
     <div class="row">
       <div class="col-12">
         <h1 class="mb-2">Add new blog</h1>
-        <form action="">
+        <VForm @submit="addBlog" :validation-schema="validationSchema">
           <div class="mb-3">
             <label for="exampleFormControlInput1" class="form-label">Tittle</label>
-            <input
+            <Field
               type="text"
-              class="form-control"
-              id="exampleFormControlInput1"
+              class="form-control form-control-solid"
               placeholder="Title"
+              name="title"
               v-model="title" />
+
+            <div class="error">
+              <ErrorMessage name="title" />
+            </div>
           </div>
           <!--  -->
           <div class="mb-3">
             <label for="exampleFormControlTextarea1" class="form-label">Text</label>
-            <textarea
-              class="form-control"
-              id="exampleFormControlTextarea1"
-              placeholder="Write text"
-              v-model="text"
-              rows="4"></textarea>
+            <Field
+              type="textarea"
+              as="textarea"
+              rows="3"
+              class="form-control form-control-solid"
+              placeholder="write text"
+              name="text"
+              v-model="text" />
+
+            <div class="error">
+              <ErrorMessage name="text" />
+            </div>
           </div>
-          <button type="button" class="btn btn-primary my-2" @click="addBlog">
-            Create new blog
-          </button>
-        </form>
+          <button type="submit" class="btn btn-primary my-2">Create new blog</button>
+        </VForm>
         <!-- LIST -->
       </div>
     </div>
@@ -37,18 +45,29 @@
 import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
 import { blogStore } from "@/stores/blog";
+import { ErrorMessage, Field, Form as VForm } from "vee-validate";
 
 import { Blog } from "@/interfaces/blog";
+import * as yup from "yup";
 
 export default defineComponent({
   name: "AddBlogView",
-  components: {},
+  components: {
+    ErrorMessage,
+    Field,
+    VForm
+  },
   setup() {
     const router = useRouter();
     const store = blogStore();
     const title = ref();
     const text = ref();
     const blogs = ref<Blog[]>([] as Blog[]);
+
+    const validationSchema = yup.object().shape({
+      title: yup.string().required("Please enter a title").max(60),
+      text: yup.string().required("Please enter some text").max(250)
+    });
 
     const addBlog = () => {
       const newBlog = {
@@ -67,8 +86,15 @@ export default defineComponent({
       blogs,
       title,
       text,
-      addBlog
+      addBlog,
+      validationSchema
     };
   }
 });
 </script>
+
+<style scoped>
+.error {
+  color: red;
+}
+</style>
