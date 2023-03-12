@@ -15,10 +15,14 @@
   </div>
   <!--  -->
   <div class="container">
-    <h1>Details</h1>
+    <h1>Details Blog</h1>
+    <div class="d-flex justify-content-around me-2">
+      <em>Autor {{ blog.author }}</em>
+      <em>Category {{ blog.category }}</em>
+    </div>
     <div class="card">
       <div class="card-header d-flex justify-content-around align-items-center">
-        <h3 class="card-title">{{ blog.title }}</h3>
+        <h3 class="card-title">Title: {{ blog.title }}</h3>
         <div class="card-toolbar">
           <button
             type="button"

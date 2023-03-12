@@ -2,32 +2,39 @@
   <div class="container">
     <div class="row">
       <div class="col-12">
-        <h1 class="mb-2">Add new blog</h1>
-        <form action="">
+        <h1 class="mb-2">Update Blog</h1>
+        <VForm @submit="updateBlog" :validation-schema="validationSchema">
           <div class="mb-3">
             <label for="exampleFormControlInput1" class="form-label">Tittle</label>
-            <input
+            <Field
               type="text"
-              class="form-control"
-              id="exampleFormControlInput1"
+              class="form-control form-control-solid"
               placeholder="Title"
+              name="title"
               v-model="blog.title" />
+
+            <div class="error">
+              <ErrorMessage name="title" />
+            </div>
           </div>
           <!--  -->
           <div class="mb-3">
             <label for="exampleFormControlTextarea1" class="form-label">Text</label>
-            <textarea
-              class="form-control"
-              id="exampleFormControlTextarea1"
-              placeholder="Write text"
-              v-model="blog.text"
-              rows="4"></textarea>
+            <Field
+              type="textarea"
+              as="textarea"
+              rows="3"
+              class="form-control form-control-solid"
+              placeholder="write text"
+              name="text"
+              v-model="blog.text" />
+
+            <div class="error">
+              <ErrorMessage name="text" />
+            </div>
           </div>
-          <button type="button" class="btn btn-primary my-2" @click="updateBlog">
-            Update Blog
-          </button>
-        </form>
-        <!-- LIST -->
+          <button type="submit" class="btn btn-primary my-2">update blog</button>
+        </VForm>
       </div>
     </div>
   </div>
@@ -38,10 +45,17 @@ import { defineComponent, computed, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { blogStore } from "@/stores/blog";
 import { Blog } from "@/interfaces/blog";
+import { ErrorMessage, Field, Form as VForm } from "vee-validate";
+
+import * as yup from "yup";
 
 export default defineComponent({
   name: "AddBlogView",
-  components: {},
+  components: {
+    ErrorMessage,
+    Field,
+    VForm
+  },
   setup() {
     const router = useRouter();
     const { params } = useRoute();
@@ -51,6 +65,12 @@ export default defineComponent({
     const text = ref();
 
     let blog = ref<Blog>({} as Blog);
+
+    const validationSchema = yup.object().shape({
+      title: yup.string().required("Please enter a title").max(60),
+      text: yup.string().required("Please enter some text").max(250)
+    });
+
     blog = computed(() => storeBlog.getOneBlog);
     storeBlog.setSelectedBlog(parseInt(params.id as string));
 
@@ -71,8 +91,15 @@ export default defineComponent({
       blog,
       title,
       text,
-      updateBlog
+      updateBlog,
+      validationSchema
     };
   }
 });
 </script>
+
+<style scoped>
+.error {
+  color: red;
+}
+</style>
