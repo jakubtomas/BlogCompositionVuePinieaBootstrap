@@ -2,6 +2,8 @@
 
 ## vue3, composition api, Pinia store, Bootstrap 5 , Router, id , Typescript
 
+## VeeValidate , yup, validationSchema
+
 ## Project setup
 
 ```
