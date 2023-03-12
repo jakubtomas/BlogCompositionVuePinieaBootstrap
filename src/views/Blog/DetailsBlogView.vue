@@ -1,17 +1,33 @@
 <template>
+  <!--  -->
+  <div>
+    <div v-if="isPopupVisible" class="popup">
+      <div class="popup-message">
+        <div class="alert alert-danger" role="alert">
+          {{ message }}
+        </div>
+      </div>
+      <div class="d-flex justify-content-around">
+        <button class="btn btn-info" @click="hidePopup">Close</button>
+        <button class="btn btn-info" @click="deleteBlog">Yes delete Item</button>
+      </div>
+    </div>
+  </div>
+  <!--  -->
   <div class="container">
     <h1>Details</h1>
     <div class="card">
       <div class="card-header d-flex justify-content-around align-items-center">
-        <h3 class="card-title">Name tittle</h3>
+        <h3 class="card-title">{{ blog.title }}</h3>
         <div class="card-toolbar">
-          <button type="button" class="btn btn-warning btn-sm mx-2">
-            <!-- <i class="fas fa-pencil-alt mr-2"></i>Upraviť -->
+          <button
+            type="button"
+            class="btn btn-warning btn-sm mx-2"
+            @click="redirectToUpdate">
             Edit Blog
           </button>
 
-          <button type="button" class="btn btn-danger btn-sm">
-            <!-- <i class="fas fa-times mr-2"></i>Zrušiť úpravy -->
+          <button type="button" class="btn btn-danger btn-sm" @click="showPopup">
             Delete blog
           </button>
         </div>
@@ -20,13 +36,7 @@
         <div class="row">
           <div class="col-12">
             <p class="text">
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ab facilis Lorem
-              ipsum dolor sit, amet consectetur adipisicing elit. Ab facilis Lorem ipsum
-              dolor sit, amet consectetur adipisicing elit. Ab facilis Lorem ipsum dolor
-              sit, amet consectetur adipisicing elit. Ab facilis Lorem ipsum dolor sit,
-              amet consectetur adipisicing elit. Ab facilis accusantium consectetur quasi,
-              modi magni beatae quis hic quia quam, iste neque? Cum, modi dolorum! Dolor
-              repellat unde laudantium possimus!
+              {{ blog.text }}
             </p>
           </div>
         </div>
@@ -36,40 +46,58 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, onMounted } from "vue";
-import { useRoute } from "vue-router";
+import { defineComponent, ref, computed } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { blogStore } from "@/stores/blog";
+import { Blog } from "@/interfaces/blog";
 
 export default defineComponent({
   name: "DetailsBlogView",
   components: {},
-  props: {
-    //  ide: { type: Number, required: true }
-  },
+  props: {},
   setup() {
-    // const route = useRoute();
-    // const id = route.params.id;
-    // const name = route.query.name;
-
+    const store = blogStore();
     const route = useRoute();
-    const urlParam: any = ref();
-    const userData = ref();
+    const router = useRouter();
+
+    let blog = ref<Blog>({} as Blog);
 
     const { params } = useRoute();
+    blog = computed(() => store.getOneBlog);
+    store.setSelectedBlog(parseInt(params.id as string));
 
-    onMounted(() => {
-      console.log("automatic");
-      console.log(route.params);
+    const isPopupVisible = ref(false);
+    const popupMessage = ref("");
 
-      funnyFunction();
-    });
-
-    const funnyFunction = () => {
-      console.log("funny");
-      console.log("tvoj parameter " + JSON.stringify(params));
-      console.log(route.params);
+    //functions
+    const showPopup = () => {
+      isPopupVisible.value = true;
+      popupMessage.value = "Are you sure you want to delete the item?";
     };
 
-    return { route, urlParam, funnyFunction };
+    const hidePopup = () => {
+      isPopupVisible.value = false;
+    };
+
+    const redirectToUpdate = () => {
+      router.push("/updateBlog/" + blog.value.id);
+    };
+
+    const deleteBlog = () => {
+      store.deleteBlog(blog.value.id);
+      router.push("/blog");
+    };
+
+    return {
+      route,
+      blog,
+      redirectToUpdate,
+      deleteBlog,
+      isPopupVisible,
+      message: popupMessage,
+      showPopup,
+      hidePopup
+    };
   }
 });
 </script>
@@ -77,5 +105,18 @@ export default defineComponent({
 <style scoped>
 .text {
   text-align: justify;
+}
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border: 1px solid black;
+  padding: 16px;
+}
+
+.popup-message {
+  margin-bottom: 16px;
 }
 </style>

@@ -27,7 +27,15 @@ const routes: Array<RouteRecordRaw> = [
     name: "details",
     component: () => import("../views/Blog/DetailsBlogView.vue")
     //props: true
-  }
+  },
+  {
+    path: "/updateBlog/:id",
+    name: "update",
+    component: () => import("../views/Blog/UpdateBlogView.vue")
+    //props: true
+  },
+  // call all redirect to home page
+  { path: "/:pathMatch(.*)*", redirect: "/" }
 ];
 
 const router = createRouter({

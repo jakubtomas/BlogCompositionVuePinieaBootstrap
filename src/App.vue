@@ -4,10 +4,20 @@
     <router-link to="/about">About</router-link> |
     <router-link to="/blog">blog</router-link>|
     <router-link to="/addBlog">ADD blog</router-link> |
-    <!-- <router-link to="/detailsBlog">details blog</router-link> -->
   </nav>
+  <AlertComponent></AlertComponent>
   <router-view />
 </template>
+
+<script lang="ts">
+import { defineComponent } from "vue";
+import AlertComponent from "@/components/Alert.vue";
+
+export default defineComponent({
+  name: "app-component",
+  components: { AlertComponent }
+});
+</script>
 
 <style>
 #app {

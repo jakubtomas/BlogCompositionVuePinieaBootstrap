@@ -11,7 +11,7 @@
               class="form-control"
               id="exampleFormControlInput1"
               placeholder="Title"
-              v-model="title" />
+              v-model="blog.title" />
           </div>
           <!--  -->
           <div class="mb-3">
@@ -20,11 +20,11 @@
               class="form-control"
               id="exampleFormControlTextarea1"
               placeholder="Write text"
-              v-model="text"
+              v-model="blog.text"
               rows="4"></textarea>
           </div>
-          <button type="button" class="btn btn-primary my-2" @click="addBlog">
-            Create new blog
+          <button type="button" class="btn btn-primary my-2" @click="updateBlog">
+            Update Blog
           </button>
         </form>
         <!-- LIST -->
@@ -34,10 +34,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-import { useRouter } from "vue-router";
+import { defineComponent, computed, ref } from "vue";
+import { useRouter, useRoute } from "vue-router";
 import { blogStore } from "@/stores/blog";
-
 import { Blog } from "@/interfaces/blog";
 
 export default defineComponent({
@@ -45,29 +44,34 @@ export default defineComponent({
   components: {},
   setup() {
     const router = useRouter();
-    const store = blogStore();
+    const { params } = useRoute();
+    const storeBlog = blogStore();
+
     const title = ref();
     const text = ref();
-    const blogs = ref<Blog[]>([] as Blog[]);
 
-    const addBlog = () => {
-      const newBlog = {
-        id: Math.floor(Math.random() * (100000 - 5 + 1) + 5),
+    let blog = ref<Blog>({} as Blog);
+    blog = computed(() => storeBlog.getOneBlog);
+    storeBlog.setSelectedBlog(parseInt(params.id as string));
+
+    const updateBlog = () => {
+      const updatedBlog = {
+        id: blog.value.id,
         author: "Peter3",
         category: "sport",
-        title: title.value,
-        text: text.value
+        title: blog.value.title,
+        text: blog.value.text
       };
-      store.addBlog(newBlog);
-      router.push("/blog");
+      storeBlog.updateBlog(updatedBlog);
+      router.push("/detailsBlog/" + blog.value.id);
     };
 
     return {
-      store,
-      blogs,
+      store: storeBlog,
+      blog,
       title,
       text,
-      addBlog
+      updateBlog
     };
   }
 });
