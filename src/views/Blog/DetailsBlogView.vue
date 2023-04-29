@@ -53,7 +53,7 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { blogStore } from "@/stores/blog";
+import { useBlogStore } from "@/stores/blog";
 import { Blog } from "@/interfaces/blog";
 
 export default defineComponent({
@@ -61,7 +61,7 @@ export default defineComponent({
   components: {},
   props: {},
   setup() {
-    const store = blogStore();
+    const store = useBlogStore();
     const route = useRoute();
     const router = useRouter();
 

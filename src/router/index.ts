@@ -13,6 +13,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/views/Blog/ListBlogView.vue")
   },
   {
+    path: "/blog",
+    name: "blog",
+    component: () => import("@/views/Blog/ListBlogView.vue")
+  },
+  {
     path: "/addBlog",
     name: "addBlog",
     component: () => import("../views/Blog/AddBlogView.vue")
@@ -26,6 +31,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/updateBlog/:id",
     name: "update",
     component: () => import("../views/Blog/UpdateBlogView.vue")
+  },
+  {
+    path: "/users",
+    name: "users",
+    component: () => import("../views/Users/UserView.vue")
   },
   { path: "/:pathMatch(.*)*", redirect: "/" }
 ];

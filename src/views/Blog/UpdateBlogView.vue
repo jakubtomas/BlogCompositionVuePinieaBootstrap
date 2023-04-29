@@ -43,7 +43,7 @@
 <script lang="ts">
 import { defineComponent, computed, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import { blogStore } from "@/stores/blog";
+import { useBlogStore } from "@/stores/blog";
 import { Blog } from "@/interfaces/blog";
 import { ErrorMessage, Field, Form as VForm } from "vee-validate";
 
@@ -59,7 +59,7 @@ export default defineComponent({
   setup() {
     const router = useRouter();
     const { params } = useRoute();
-    const storeBlog = blogStore();
+    const storeBlog = useBlogStore();
 
     const title = ref();
     const text = ref();

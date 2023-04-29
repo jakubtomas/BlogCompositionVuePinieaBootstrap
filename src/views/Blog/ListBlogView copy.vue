@@ -22,9 +22,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent, ref, computed } from "vue";
 import { useRouter } from "vue-router";
-import { useBlogStore } from "@/stores/blog";
+import { blogStore } from "@/stores/blog";
 import { Blog } from "@/interfaces/blog";
 
 export default defineComponent({
@@ -32,11 +32,11 @@ export default defineComponent({
   components: {},
   setup() {
     const router = useRouter();
-    const store = useBlogStore();
+    const store = blogStore();
 
-    const blogs = computed<Blog[]>(() => {
-      return store.getAllBlogs;
-    });
+    let blogs = ref<Blog[]>([] as Blog[]);
+
+    blogs = computed(() => store.getAllBlogs);
 
     const redirectToCreateBlog = (): void => {
       router.push("/addBlog");
