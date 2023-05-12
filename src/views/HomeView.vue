@@ -7,10 +7,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 
 export default defineComponent({
   name: "HomeView",
-  components: {}
+  components: {},
+  setup() {
+    const refreshCount = ref(0);
+    const parentData = ref("Parent Data");
+
+    return { parentData, refreshCount };
+  }
 });
 </script>
+
+<style scoped></style>

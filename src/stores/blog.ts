@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { Blog } from "@/interfaces/blog";
+
 export const useBlogStore = defineStore("user", {
   state: () => ({
     blogs: [

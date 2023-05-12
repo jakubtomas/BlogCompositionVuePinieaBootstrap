@@ -4,6 +4,7 @@
     <router-link to="/blog">All blogs</router-link>|
     <router-link to="/addBlog">new blog</router-link> |
     <router-link to="/users">users</router-link> |
+    <router-link to="/usersTableList">Users Table list</router-link> |
   </nav>
   <AlertComponent></AlertComponent>
   <router-view />

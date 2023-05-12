@@ -1,7 +1,4 @@
-//stores/users.js
-
 import { defineStore } from "pinia";
-// Import axios to make HTTP requests
 import axios from "axios";
 import { User } from "@/interfaces/user";
 export const useUserStore = defineStore("user", {

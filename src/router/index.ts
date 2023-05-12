@@ -37,6 +37,16 @@ const routes: Array<RouteRecordRaw> = [
     name: "users",
     component: () => import("../views/Users/UserView.vue")
   },
+  {
+    path: "/users",
+    name: "users",
+    component: () => import("../views/Users/UserView.vue")
+  },
+  {
+    path: "/usersTableList",
+    name: "usersTableList",
+    component: () => import("../views/Users/UsersTableList.vue")
+  },
   { path: "/:pathMatch(.*)*", redirect: "/" }
 ];
 
