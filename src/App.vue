@@ -5,6 +5,9 @@
     <router-link to="/addBlog">new blog</router-link> |
     <router-link to="/users">users</router-link> |
     <router-link to="/usersTableList">Users Table list</router-link> |
+    <router-link to="/usersTableListV2">Users Table2</router-link> |
+    <router-link to="/usersTableListV3">Users Table3</router-link> |
+    <router-link to="/propsEmit">propsEmit</router-link> |
   </nav>
   <AlertComponent></AlertComponent>
   <router-view />

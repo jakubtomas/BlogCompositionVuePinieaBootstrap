@@ -16,32 +16,28 @@
         <table class="table table-striped table-sm table-bordered">
           <thead>
             <tr>
-              <th scope="col" v-for="(item, index) in tableHeaderData" :key="index">
+              <th scope="col" v-for="(item, index) in tableHeader" :key="index">
                 {{ item.name }}
               </th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(user, index) in mockUsersData.data" :key="index">
+            <!-- <tr v-for="(user, index) in mockUsersData.data" :key="index">
               <td>{{ user.attributes.first_name }}</td>
               <td>{{ user.attributes.last_name }}</td>
               <td>{{ user.attributes.email }}</td>
               <td>{{ user.attributes.rank }}</td>
               <td>{{ user.attributes.created_at }}</td>
-              <td>
-                <div class="dropdown">
-                  <button
-                    class="btn btn-info dropdown-toggle"
-                    type="button"
-                    id="dropdownMenuButton1"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    Dropdown button
-                  </button>
-                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                    <li><a class="dropdown-item" href="#">Action</a></li>
-                  </ul>
-                </div>
+              <td></td>
+            </tr> -->
+            <tr v-for="(user, index) in users" :key="index">
+              <td v-for="(header, j) in tableHeader" :key="j">
+                <slot
+                  :name="header.name"
+                  :rowData="user"
+                  :columnData="user[header.name]"
+                  >{{ user[header.name] }}</slot
+                >
               </td>
             </tr>
           </tbody>
@@ -105,6 +101,7 @@ export interface HeaderItem {
   name: string;
   title: string;
   stringOrderBy: string;
+  width?: string;
 }
 export interface TableOrder {
   orderBy: string;
@@ -121,7 +118,6 @@ tableHeaderData.value = [
     id: 1,
     name: t("first_name"),
     title: "first_name",
-
     stringOrderBy: "first_name"
   },
   {
@@ -156,19 +152,35 @@ tableHeaderData.value = [
   }
 ];
 
-const users = [
+const users = ref<{ [key: string]: any }[]>([
   {
-    id: "1",
-    attributes: {
-      first_name: "Admin",
-      last_name: "Hrasko",
-      email: "admin@hrasko.com",
-      rank: "admin",
-      created_at: "2024-05-12T11:18:12.000000Z",
-      updated_at: "2024-05-12T11:28:80.000000Z"
-    }
+    id: "2",
+    first_name: "John",
+    last_name: "Doe",
+    email: "johndoe@example.com",
+    role: "user",
+    created_at: "13.05.2023 10:23",
+    updated_at: "13.05.2023 11:47"
+  },
+  {
+    id: "3",
+    first_name: "Jane",
+    last_name: "Doe",
+    email: "janedoe@example.com",
+    role: "user",
+    created_at: "13.05.2023 14:51",
+    updated_at: "13.05.2023 16:02"
+  },
+  {
+    id: "4",
+    first_name: "Bob",
+    last_name: "Smith",
+    email: "bobsmith@example.com",
+    role: "user",
+    created_at: "14.05.2023 09:12",
+    updated_at: ""
   }
-];
+]);
 
 const tableHeader = ref<HeaderItem[]>([
   {

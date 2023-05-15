@@ -47,6 +47,26 @@ const routes: Array<RouteRecordRaw> = [
     name: "usersTableList",
     component: () => import("../views/Users/UsersTableList.vue")
   },
+  {
+    path: "/usersTableListV2",
+    name: "usersTableListV2",
+    component: () => import("../views/Users/UsersTableListV2.vue")
+  },
+  {
+    path: "/usersTableListV3",
+    name: "usersTableListV3",
+    component: () => import("../views/Users/UsersTableListV3.vue")
+  },
+  {
+    path: "/propsEmit",
+    name: "propsEmit",
+    component: () => import("../views/PropsEmit.vue")
+  },
+  // {
+  //   path: "/playground",
+  //   name: "playground",
+  //   component: () => import("../views/Users/playCode.vue")
+  // },
   { path: "/:pathMatch(.*)*", redirect: "/" }
 ];
 
