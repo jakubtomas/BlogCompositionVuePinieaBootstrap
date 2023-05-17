@@ -1,7 +1,7 @@
 <template>
   <div class="container mt-5">
     <div class="row">
-      <div class="col-6">
+      <div class="col-sm-6 col-lg-3">
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text" id="basic-addon1">Search</span>
@@ -9,9 +9,9 @@
           <input
             type="text"
             class="form-control"
-            placeholder="Username"
             aria-label="Username"
-            aria-describedby="basic-addon1" />
+            aria-describedby="basic-addon1"
+            v-model="searchText" />
         </div>
       </div>
     </div>
@@ -23,6 +23,15 @@
               <th
                 scope="col"
                 @click="setOrderBy(item.name)"
+                :class="
+                  item.stringOrderBy === ''
+                    ? 'noSort'
+                    : item.stringOrderBy !== order?.orderBy
+                    ? 'tdHover'
+                    : order.sortOrder === 'asc'
+                    ? 'blue'
+                    : 'red'
+                "
                 v-for="(item, index) in tableHeaderData"
                 :key="index">
                 {{ item.name }}
@@ -32,12 +41,9 @@
           <tbody>
             <tr v-for="(user, index) in tableBodyData" :key="index">
               <td v-for="(header, j) in tableHeaderData" :key="j">
-                <slot
-                  :name="header.name"
-                  :rowData="user"
-                  :columnData="user[header.name]"
-                  >{{ user[header.name] }}</slot
-                >
+                <slot :name="header.name" :rowData="user" :columnData="user[header.name]">
+                  {{ user[header.name] }}
+                </slot>
               </td>
             </tr>
           </tbody>
@@ -53,10 +59,16 @@
       </div>
       <div class="col-8">
         <ul v-if="last_page > 1" class="pagination">
-          <li :class="{ 'page-item': true, previous: true, disabled: currentPage == 1 }">
-            <a class="page-link" @click="setPage(currentPage - 1)"
-              >Previous<i class="previous"></i
-            ></a>
+          <li
+            :class="{
+              'page-item': true,
+              previous: true,
+              disabled: currentPage == 1
+            }">
+            <a class="page-link" @click="setPage(currentPage - 1)">
+              Previous
+              <i class="previous"></i>
+            </a>
           </li>
           <li
             v-for="(page, index) in pageNumbers"
@@ -70,9 +82,10 @@
               next: true,
               disabled: currentPage == last_page
             }">
-            <a class="page-link" @click="setPage(currentPage + 1)"
-              >Next<i class="next"></i
-            ></a>
+            <a class="page-link" @click="setPage(currentPage + 1)">
+              Next
+              <i class="next"></i>
+            </a>
           </li>
         </ul>
       </div>
@@ -81,7 +94,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, defineProps, defineEmits, ref, watch, computed } from "vue";
+import { defineProps, defineEmits, ref, watch, computed } from "vue";
 
 export interface HeaderItem {
   id: number;
@@ -100,15 +113,6 @@ export interface Pagination {
   last_page: number;
 }
 
-//todo
-//add checkboxies with create array of selected value + checboxies update when click
-//searchText + functionality call function in parent
-// sorting sipky hore dole , change background color of sorting header
-//padding
-///color
-// pocet zaznamov per page , plus akcia zmena
-//vsetky akcie kontrola requestov string console log
-
 const props = defineProps<{
   tableHeaderData: HeaderItem[];
   tableBodyData: { [key: string]: any }[];
@@ -116,19 +120,14 @@ const props = defineProps<{
   order?: TableOrder;
   loading?: boolean;
   tableStyle?: "red";
+  checkboxies?: false;
 }>();
 
 const emits = defineEmits(["change-page", "change-order-by", "change-search-text"]);
 
 const searchText = ref("");
-
-const last_page = ref(props.paginationProps?.last_page ?? 1);
 const currentPage = ref(props.paginationProps?.current_page ?? 0);
-
-const tableOrder = ref<TableOrder>({
-  orderBy: "id",
-  sortOrder: "asc"
-});
+const last_page = ref(props.paginationProps?.last_page ?? 1);
 
 const setPage = (newPage: number) => {
   currentPage.value = newPage;
@@ -183,6 +182,22 @@ const getPageButtons = (currentPage: number = 1, totalPage: number = 1) => {
 </script>
 
 <style scoped>
+.noSort {
+  text-decoration: line-through;
+  cursor: not-allowed;
+}
+.tdHover:hover {
+  background-color: #cccc;
+  cursor: pointer;
+}
+.red {
+  color: red;
+  cursor: pointer;
+}
+.blue {
+  color: blue;
+  cursor: pointer;
+}
 .page-item.active {
   color: red !important;
 }

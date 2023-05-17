@@ -9,6 +9,7 @@
     @change-search-text="changeSearchText"
     :table-header-data="tableHeader"
     :table-body-data="users"
+    :order="tableOrder"
     :paginationProps="{
       current_page: mockUsersData.meta.current_page,
       last_page: mockUsersData.meta.last_page ? mockUsersData.meta.last_page : 1
@@ -18,8 +19,8 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { debounce } from "lodash";
 import { useI18n } from "vue-i18n";
+import { debounce } from "lodash";
 import DataTable from "@/components/DataTable.vue";
 
 export interface HeaderItem {
@@ -34,23 +35,12 @@ export interface TableOrder {
   sortOrder: "asc" | "desc";
 }
 
-const { t } = useI18n();
-
-const changePage = (params: number) => {
-  console.log(params);
-};
-const changeOrderBy = (params: { orderBy: string; sortOrder: "asc" | "desc" }) => {
-  console.log(params.orderBy);
-  console.log(params.sortOrder);
-};
-const changeSearchText = (params: any) => {
-  console.log(params);
-};
+//const { t } = useI18n();
 
 const users = ref<{ [key: string]: any }[]>([
   {
     id: "2",
-    first_name: "John",
+    first_name: "Johnmm",
     last_name: "Wick",
     email: "johndoe@example.com",
     role: "user",
@@ -67,7 +57,7 @@ const users = ref<{ [key: string]: any }[]>([
     updated_at: "13.05.2023 16:02"
   },
   {
-    id: "4",
+    id: "5",
     first_name: "Bob",
     last_name: "Smith",
     email: "bobsmith@example.com",
@@ -78,6 +68,12 @@ const users = ref<{ [key: string]: any }[]>([
 ]);
 
 const tableHeader = ref<HeaderItem[]>([
+  {
+    id: 0,
+    name: "id",
+    title: "id",
+    stringOrderBy: "id"
+  },
   {
     id: 1,
     name: "first_name",
@@ -116,6 +112,7 @@ const tableHeader = ref<HeaderItem[]>([
   }
 ]);
 
+//only for pagination meta data change this
 const mockUsersData = {
   data: [
     {
@@ -170,14 +167,15 @@ const mockUsersData = {
   }
 };
 
+const searchInput = ref("");
 let page = 1;
-let searchInput = ref("");
 
 const tableOrder = ref<TableOrder>({
   orderBy: "id",
   sortOrder: "asc"
 });
-let displaySpinner = ref(false);
+
+const displaySpinner = ref(false);
 
 // in real case we take the users from api after formating data
 //users = computed(() => userStore.getUsers);
@@ -185,14 +183,27 @@ let displaySpinner = ref(false);
 onMounted(() => {
   fetchUsersData();
 });
-// const searchText = debounce((searchText: string) => {
-//   searchInput.value = searchText;
-//   tableOrder.value.sortOrder = "asc";
-//   tableOrder.value.orderBy = "";
-//   page = 1;
+const changePage = (newPage: number) => {
+  if (page === newPage) {
+    return;
+  }
+  page = newPage;
+  fetchUsersData();
+};
 
-//   fetchUsersData();
-// }, 250);
+const changeOrderBy = (params: { orderBy: string; sortOrder: "asc" | "desc" }) => {
+  tableOrder.value = params;
+  fetchUsersData();
+};
+
+const changeSearchText = debounce((searchText: string) => {
+  searchInput.value = searchText;
+  tableOrder.value.sortOrder = "asc";
+  tableOrder.value.orderBy = "";
+  page = 1;
+
+  fetchUsersData();
+}, 250);
 
 const fetchUsersData = () => {
   //API for fetching data with parameter
@@ -204,6 +215,13 @@ const fetchUsersData = () => {
     sort_order: tableOrder.value.sortOrder,
     search: searchInput.value
   };
+
+  console.log("=====================");
+  console.log("REQUEST PARAMS");
+  // console.table(parameter);
+  console.log("--------------------");
+  console.log(parameter);
+  console.log("=====================");
 
   //maybe create store with this function ,
   // or create global file for API ,, with AXIOS
