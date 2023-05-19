@@ -8,6 +8,7 @@
     <router-link to="/usersTableListV2">Users Table2</router-link> |
     <router-link to="/usersTableListV3">Users Table3</router-link> |
     <router-link to="/propsEmit">propsEmit</router-link> |
+    <router-link to="/vmodelmodelvalue">vmodelmodelValue</router-link> |
   </nav>
   <AlertComponent></AlertComponent>
   <router-view />

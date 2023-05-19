@@ -54,11 +54,11 @@
     <!-- Pagination -->
     <div class="row">
       <div class="col-4">
-        strana {{ currentPage }} s
+        strana {{ paginationProps?.current_page }} s
         {{ paginationProps?.last_page }}
       </div>
       <div class="col-8">
-        <!-- <ul v-if="last_page > 1" class="pagination">
+        <ul v-if="last_page > 1" class="pagination">
           <li
             :class="{
               'page-item': true,
@@ -87,20 +87,14 @@
               <i class="next"></i>
             </a>
           </li>
-        </ul> -->
-
-        <TablePagination
-          :current_page="1"
-          :last_page="last_page"
-          @change-page="setPage"></TablePagination>
+        </ul>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits, ref, watch } from "vue";
-import TablePagination from "@/components/TablePagination.vue";
+import { defineProps, defineEmits, ref, watch, computed } from "vue";
 
 export interface HeaderItem {
   id: number;
@@ -155,6 +149,36 @@ watch(searchText, (newValue) => {
     emits("change-search-text", newValue);
   }
 });
+
+const pageNumbers = computed(() => {
+  const result = getPageButtons(currentPage.value, last_page.value);
+  return result;
+});
+
+// eslint-disable-next-line
+const getPageButtons = (currentPage: number = 1, totalPage: number = 1) => {
+  const pageNumbers = [];
+
+  pageNumbers.push(1);
+  for (let i = currentPage - 3; i < currentPage; i++) {
+    if (i > 1) {
+      pageNumbers.push(i);
+    }
+  }
+
+  if (currentPage !== 1 && currentPage !== totalPage) {
+    pageNumbers.push(currentPage);
+  }
+
+  for (let i = currentPage + 1; i <= currentPage + 3; i++) {
+    if (i < totalPage) {
+      pageNumbers.push(i);
+    }
+  }
+  pageNumbers.push(totalPage);
+
+  return pageNumbers;
+};
 </script>
 
 <style scoped>

@@ -217,11 +217,8 @@ const fetchUsersData = () => {
   };
 
   console.log("=====================");
-  console.log("REQUEST PARAMS");
-  // console.table(parameter);
-  console.log("--------------------");
   console.log(parameter);
-  console.log("=====================");
+  console.log("--------------------");
 
   //maybe create store with this function ,
   // or create global file for API ,, with AXIOS

@@ -62,6 +62,12 @@ const routes: Array<RouteRecordRaw> = [
     name: "propsEmit",
     component: () => import("../views/PropsEmit.vue")
   },
+  {
+    //     <router-link to="/vmodelmodelvalue">vmodelmodelValue</router-link> |
+    path: "/vmodelmodelvalue",
+    name: "vmodelmodelvalue",
+    component: () => import("../views/VModelModelValue.vue")
+  },
   // {
   //   path: "/playground",
   //   name: "playground",
