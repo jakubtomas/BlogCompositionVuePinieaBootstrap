@@ -43,6 +43,16 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/Users/UserView.vue")
   },
   {
+    path: "/BasicDefine",
+    name: "BasicDefine",
+    component: () => import("../views/Basic/BasicDefine.vue")
+  },
+  {
+    path: "/BasicDefineSetup",
+    name: "BasicDefineSetup",
+    component: () => import("../views/Basic/BasicDefineSetup.vue")
+  },
+  {
     path: "/usersTableList",
     name: "usersTableList",
     component: () => import("../views/Users/UsersTableList.vue")
@@ -68,11 +78,11 @@ const routes: Array<RouteRecordRaw> = [
     name: "vmodelmodelvalue",
     component: () => import("../views/VModelModelValue.vue")
   },
-  // {
-  //   path: "/playground",
-  //   name: "playground",
-  //   component: () => import("../views/Users/playCode.vue")
-  // },
+  {
+    path: "/todoList/",
+    name: "todoList",
+    component: () => import("../views/TodoApp/todoList.vue")
+  },
   { path: "/:pathMatch(.*)*", redirect: "/" }
 ];
 

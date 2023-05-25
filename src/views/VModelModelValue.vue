@@ -20,7 +20,6 @@ import { ref } from "vue";
 import ModelValue from "@/components/ModelValue.vue";
 
 const name = ref("Harry Potter");
-
 // a
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-  <div>Props Emit layout</div>
+  <div>Props Emit Slots, template send data</div>
   <CardComponent
     @send-message-to-parent="catchChildData"
     :title="'Title text'"
