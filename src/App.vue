@@ -13,6 +13,18 @@
     <router-link to="/vmodelmodelvalue">vmodelmodelValue</router-link> |
     <router-link to="/todoList">todoList</router-link> |
   </nav>
+  <code v-if="store.getMessages.length > 0">
+    <div :class="'alert alert-' + store.getTypeMessage" role="alert">
+      <ul>
+        <li
+          v-for="(todo, index) in store.getMessages"
+          :key="index"
+          class="list-group-item">
+          {{ todo }}
+        </li>
+      </ul>
+    </div>
+  </code>
   <AlertComponent></AlertComponent>
   <router-view />
 </template>
@@ -20,10 +32,16 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import AlertComponent from "@/components/Alert.vue";
+import { useWindowMessages } from "@/stores/windowMessage";
 
 export default defineComponent({
   name: "app-component",
-  components: { AlertComponent }
+  components: { AlertComponent },
+  setup() {
+    const store = useWindowMessages();
+
+    return { store };
+  }
 });
 </script>
 

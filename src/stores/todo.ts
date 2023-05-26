@@ -1,6 +1,8 @@
 import { defineStore } from "pinia";
 import { todoItem } from "@/interfaces/todoItem";
 import axios, { AxiosError } from "axios";
+import { useWindowMessages } from "@/stores/windowMessage";
+import { useAlertComposable } from "@/composables/useAlert";
 
 export const useTodoStore = defineStore("todo", {
   state: () => ({
@@ -11,16 +13,26 @@ export const useTodoStore = defineStore("todo", {
     getTodoItems(state): todoItem[] {
       return state.todoItems;
     },
-    getOneItem(state): any {
-      return (idItem: string) => {
-        return state.todoItems.filter((item) => item.id == idItem)[0];
-      };
-    },
-    getOneTodoItem:
+
+    // this is working from project
+    // getOneItem(state): any {
+    //   return (idItem: string) => {
+    //     return state.todoItems.filter((item) => item.id == idItem)[0];
+    //   };
+    // }
+
+    // better from chatgppt
+    getOneItem:
       (state) =>
-      (id: string): todoItem | undefined => {
-        return state.todoItems.find((item) => item.id === id);
+      (idItem: string): todoItem | undefined => {
+        return state.todoItems.find((item) => item.id === idItem);
       }
+
+    // getOneTodoItem:
+    //   (state) =>
+    //   (id: string): todoItem | undefined => {
+    //     return state.todoItems.find((item) => item.id === id);
+    //   }
   },
   actions: {
     async fetchTodoItems() {
@@ -31,6 +43,9 @@ export const useTodoStore = defineStore("todo", {
         this.todoItems = data;
       } catch (response) {
         const error = response as AxiosError<any>;
+        console.log(error);
+
+        useWindowMessages().addNewMessage("you got error", { type: "danger" });
       }
     },
     async fetchOneItem() {
@@ -50,25 +65,36 @@ export const useTodoStore = defineStore("todo", {
           newData
         );
 
-        alert("success update item");
+        useWindowMessages().addNewMessage("updated success", { type: "success" });
         this.fetchTodoItems();
       } catch (response) {
         const error = response as AxiosError<any>;
         console.log(error);
       }
     },
+
     async deleteTodoItem(idItem: number) {
+      const storeWindowMessage = useWindowMessages();
+      const alert = useAlertComposable();
       try {
-        const response = await axios.delete(this.ApiAddress + "2/item/" + idItem);
-        console.log("success delete item");
+        const response = await axios.delete(this.ApiAddress + "2/itsem/" + idItem);
 
-        alert("success delete item");
-        this.fetchTodoItems();
+        if (response.status === 200) {
+          console.log("success delete item 200");
+          alert.displaySuccesAlert("Item has been deeleted");
+          useWindowMessages().addNewMessage("Todo item has been deleted successfully", {
+            type: "success"
+          });
 
-        console.log(response);
+          this.fetchTodoItems();
+        }
       } catch (response) {
         const error = response as AxiosError<any>;
-        console.log(error);
+
+        alert.displayDangerAlert("Item has been not deleted.Try again");
+        storeWindowMessage.addNewMessage("Item has been not deleted.Try again", {
+          type: "danger"
+        });
       }
     }
   }

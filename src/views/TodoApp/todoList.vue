@@ -18,7 +18,7 @@
 
     <div class="container-xl">
       <div class="row">
-        <div class="col-6">
+        <div class="col-4">
           <button type="button" class="btn btn-primary" @click="displayFormAddItem()">
             Add Item
           </button>
@@ -32,7 +32,7 @@
             </li>
           </ul>
         </div>
-        <div class="col-6">
+        <div class="col-8">
           <div class="card" v-if="selectedTodoItem?.title">
             <div class="card-header d-flex justify-content-around align-items-center">
               {{ selectedTodoItem?.title }}
@@ -108,9 +108,11 @@ import { onMounted, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useTodoStore } from "@/stores/todo";
 import { todoItem } from "@/interfaces/todoItem";
+import { useAlertComposable } from "@/composables/useAlert";
 
 const router = useRouter();
 const store = useTodoStore();
+const alert = useAlertComposable();
 
 //const selectetItem = ref({});
 
@@ -141,6 +143,9 @@ const updateVisibilityPopUpMessage = () => {
 
 const displayFormAddItem = () => {
   //
+};
+const showAlert = () => {
+  alert.displaySuccesAlert("hello world");
 };
 
 const updateForm = () => {

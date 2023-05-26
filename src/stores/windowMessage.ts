@@ -1,12 +1,46 @@
 import { defineStore } from "pinia";
-import { todoItem } from "@/interfaces/todoItem";
-import axios, { AxiosError } from "axios";
 
-export const useTodoStore = defineStore("todo", {
+export interface typeMessage {
+  type: "danger" | "success" | "warning" | "info";
+}
+export const useWindowMessages = defineStore("messages", {
   state: () => ({
-    ApiAddress: "https://629e64f33dda090f3c191498.mockapi.io/todos/",
-    todoItems: [] as todoItem[]
+    type: "info",
+    messages: [] as string[]
   }),
-  getters: {},
-  actions: {}
+  getters: {
+    getMessages(state): string[] {
+      return state.messages;
+    },
+    getTypeMessage(state): string {
+      return state.type;
+    }
+  },
+  actions: {
+    addNewMessage(message: string, typeMessage: typeMessage): void {
+      //reset values
+
+      this.messages = [];
+      this.type = "";
+
+      this.messages.push(message);
+      this.type = typeMessage.type;
+      this.resetStoreMessages();
+    },
+
+    resetStoreMessages() {
+      const startTime = performance.now();
+
+      setTimeout(() => {
+        this.messages = [];
+
+        // Stop the timer
+        const endTime = performance.now();
+        const elapsedTime = endTime - startTime;
+
+        // Print the elapsed time
+        console.log(`Elapsed time: ${elapsedTime} milliseconds`);
+      }, 5000);
+    }
+  }
 });

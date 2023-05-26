@@ -8,6 +8,8 @@ import i18n from "@/core/plugins/i18n";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap";
 
+import "sweetalert2/dist/sweetalert2.min.css";
+
 const pinia = createPinia();
 const app = createApp(App);
 
