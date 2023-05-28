@@ -27,12 +27,6 @@ export const useTodoStore = defineStore("todo", {
       (idItem: string): todoItem | undefined => {
         return state.todoItems.find((item) => item.id === idItem);
       }
-
-    // getOneTodoItem:
-    //   (state) =>
-    //   (id: string): todoItem | undefined => {
-    //     return state.todoItems.find((item) => item.id === id);
-    //   }
   },
   actions: {
     async fetchTodoItems() {
@@ -81,8 +75,8 @@ export const useTodoStore = defineStore("todo", {
 
         if (response.status === 200) {
           console.log("success delete item 200");
-          alert.displaySuccesAlert("Item has been deeleted");
-          useWindowMessages().addNewMessage("Todo item has been deleted successfully", {
+          alert.displaySuccesAlert("Item has been deleted");
+          storeWindowMessage.addNewMessage("Todo item has been deleted successfully", {
             type: "success"
           });
 

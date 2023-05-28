@@ -31,6 +31,8 @@
               {{ todo.title }}
             </li>
           </ul>
+
+          <AddTodoItemForm></AddTodoItemForm>
         </div>
         <div class="col-8">
           <div class="card" v-if="selectedTodoItem?.title">
@@ -107,8 +109,13 @@
 import { onMounted, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useTodoStore } from "@/stores/todo";
+
+//src\components\TodoApp\addTodoItemForm.vue
+import AddTodoItemForm from "@/components/TodoApp/addTodoItemForm.vue";
+
 import { todoItem } from "@/interfaces/todoItem";
 import { useAlertComposable } from "@/composables/useAlert";
+//src\components\TodoApp\addTodoItem.vue
 
 const router = useRouter();
 const store = useTodoStore();

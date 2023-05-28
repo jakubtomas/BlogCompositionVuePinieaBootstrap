@@ -13,7 +13,7 @@
     </template> -->
     <template #buttonSlots>
       <br />
-      <h1>header</h1>
+      <h4>slots buttonSlots</h4>
     </template>
 
     <template #caption="{ source }">

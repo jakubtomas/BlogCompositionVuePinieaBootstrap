@@ -10,15 +10,16 @@
     </div>
 
     <div class="card-body">
-      <h5 class="card-title">below here slots</h5>
-      <slot><!-- optional fallback --></slot>
-      <p class="card-text">
-        With supporting text below as a natural lead-in to additional content.
-      </p>
-      {{ idUser }}
+      <code class="card-title">below here are data in slots</code>
+      <br />
+      <slot><!-- slots without name--></slot>
+      Props parameter from parent {{ idUser }}
+      --------------
+      <br />
+      <br />
       <button @click="clickButton('parameterh')">{{ buttonText }}</button>
 
-      <slot name="buttonSlots"><!-- optional fallback --></slot>
+      <slot name="buttonSlots"><!-- slots with name  --></slot>
 
       <slot name="caption" v-bind:source="source">hello{{ source }}</slot>
     </div>
@@ -27,7 +28,8 @@
 
 <script setup lang="ts">
 import { defineEmits, defineProps, ref } from "vue";
-
+// this component is only for learning
+// noto recomenedetion to use for app , you have card.vue for this
 const emit = defineEmits(["sendMessageToParent"]);
 
 const props = defineProps({
@@ -47,6 +49,7 @@ const props = defineProps({
 
 const source = ref("source child ");
 
+//send data to parent
 const clickButton = (parameter: string) => {
   const mockData = " Hello";
   emit("sendMessageToParent", parameter);
