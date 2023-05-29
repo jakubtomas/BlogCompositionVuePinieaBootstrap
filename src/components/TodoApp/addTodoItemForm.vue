@@ -51,8 +51,6 @@ import { useTodoStore } from "@/stores/todo";
 import * as yup from "yup";
 
 const store = useTodoStore();
-
-const emit = defineEmits(["sendMessageToParent"]);
 const title = ref();
 const text = ref();
 
@@ -61,10 +59,7 @@ const validationSchema = yup.object().shape({
   text: yup.string().required("Please enter some text").max(250)
 });
 
-const addTodoItem = () => {
-  //
-  console.log("clikc add toto ditem");
-
+const addTodoItem = (): void => {
   const newTodoItem = {
     id: Math.floor(Math.random() * (100000 - 5 + 1) + 5),
     date: 1685095164,
@@ -75,13 +70,7 @@ const addTodoItem = () => {
   };
 
   store.addNewTodoItem(newTodoItem);
-  // add todo item ulozisko function
 };
-
-// const clickButton = (parameter: string) => {
-//   const mockData = " Hello";
-//   emit("sendMessageToParent", parameter);
-// };
 </script>
 
 <style scoped></style>

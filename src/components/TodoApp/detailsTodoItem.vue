@@ -96,7 +96,6 @@ const emit = defineEmits(["resetSelectedItem"]);
 
 const store = useTodoStore();
 
-//const todoItemEdit = ref<todoItem>(props.todoItem as todoItem);
 const todoItemEdit = ref<todoItem>({} as todoItem);
 
 const title = ref("");

@@ -38,70 +38,7 @@
             :todo-item="selectedTodoItem"
             @resetSelectedItem="resetSelectedTodoItem">
           </DetailsTodoItem>
-          <!-- 
-            
-            <div class="card" v-if="selectedTodoItem?.title">
-            <div class="card-header d-flex justify-content-around align-items-center">
-              {{ selectedTodoItem?.title }}
-              <div class="buttons">
-                <button
-                  type="button"
-                  class="btn btn-warning"
-                  @click="updateVisibilityEditForm()"
-                  v-if="!visibleEditForm">
-                  update
-                </button>
 
-                <button
-                  type="button"
-                  class="btn btn-warning"
-                  @click="updateVisibilityEditForm()"
-                  v-if="visibleEditForm">
-                  close
-                </button>
-
-                <button
-                  type="button"
-                  class="btn btn-danger"
-                  @click="updateVisibilityPopUpMessage()">
-                  delete
-                </button>
-              </div>
-            </div>
-            <div class="card-body">
-              <div v-if="!visibleEditForm">
-                <h5 class="card-title">{{ selectedTodoItem?.title }}</h5>
-                <p class="card-text">
-                  {{ selectedTodoItem?.text }}
-                </p>
-              </div>
-
-              <div v-if="visibleEditForm">
-                <form @submit.prevent="updateForm" class="container mt-4">
-                  <div class="mb-3">
-                    <label for="name" class="form-label">Title</label>
-                    <input
-                      v-model="selectedTodoItem.title"
-                      type="text"
-                      id="name"
-                      class="form-control"
-                      required />
-                  </div>
-
-                  <div class="mb-3">
-                    <label for="message" class="form-label">Text</label>
-                    <textarea
-                      v-model="selectedTodoItem.text"
-                      id="message"
-                      class="form-control"
-                      required></textarea>
-                  </div>
-
-                  <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
-              </div>
-            </div>
-          </div> -->
           <AddTodoItemForm v-if="visibleAddForm"></AddTodoItemForm>
         </div>
       </div>

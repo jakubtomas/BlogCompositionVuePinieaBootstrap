@@ -63,19 +63,12 @@ export const useTodoStore = defineStore("todo", {
     },
     async updateTodoItem(newData: todoItem) {
       const alert = useAlertComposable();
-      console.log(" store update todo item");
-
-      console.log("newData");
-      console.log(newData);
 
       try {
         const { data } = await axios.put(
           this.ApiAddress + "2/item/" + newData.id,
           newData
         );
-        console.log("response");
-        console.log(data);
-        console.log("response");
 
         useWindowMessages().addNewMessage("updated success", { type: "success" });
         alert.displaySuccesAlert("Item has been updated");
