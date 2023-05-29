@@ -3,9 +3,7 @@
     <Card>
       <template #cardTitleSlot> add todo item </template>
 
-      <template #cardToolbarSlot>
-        <button>Save</button>
-      </template>
+      <template #cardToolbarSlot> </template>
 
       <template #cardBodySlot>
         <VForm @submit="addTodoItem" :validation-schema="validationSchema">
@@ -49,13 +47,14 @@
 import Card from "@/components/CardGeneral.vue";
 import { defineEmits, ref } from "vue";
 import { ErrorMessage, Field, Form as VForm } from "vee-validate";
+import { useTodoStore } from "@/stores/todo";
 import * as yup from "yup";
+
+const store = useTodoStore();
 
 const emit = defineEmits(["sendMessageToParent"]);
 const title = ref();
 const text = ref();
-
-const titleName = ref("mockTitleName");
 
 const validationSchema = yup.object().shape({
   title: yup.string().required("Please enter a title").max(60),
@@ -64,14 +63,18 @@ const validationSchema = yup.object().shape({
 
 const addTodoItem = () => {
   //
+  console.log("clikc add toto ditem");
+
   const newTodoItem = {
     id: Math.floor(Math.random() * (100000 - 5 + 1) + 5),
-    author: "Peter3",
-    category: "sport",
+    date: 1685095164,
+    todoId: 2,
+    done: false,
     title: title.value,
     text: text.value
   };
 
+  store.addNewTodoItem(newTodoItem);
   // add todo item ulozisko function
 };
 

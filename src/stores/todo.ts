@@ -52,26 +52,47 @@ export const useTodoStore = defineStore("todo", {
         const error = response as AxiosError<any>;
       }
     },
+    async addNewTodoItem(newItem: any) {
+      try {
+        const { data } = await axios.post(this.ApiAddress + "2/item", newItem);
+        console.log(data);
+        this.fetchTodoItems();
+      } catch (response) {
+        const error = response as AxiosError<any>;
+      }
+    },
     async updateTodoItem(newData: todoItem) {
+      const alert = useAlertComposable();
+      console.log(" store update todo item");
+
+      console.log("newData");
+      console.log(newData);
+
       try {
         const { data } = await axios.put(
           this.ApiAddress + "2/item/" + newData.id,
           newData
         );
+        console.log("response");
+        console.log(data);
+        console.log("response");
 
         useWindowMessages().addNewMessage("updated success", { type: "success" });
-        this.fetchTodoItems();
+        alert.displaySuccesAlert("Item has been updated");
+        if (data) {
+          this.fetchTodoItems();
+        }
       } catch (response) {
         const error = response as AxiosError<any>;
         console.log(error);
       }
     },
 
-    async deleteTodoItem(idItem: number) {
+    async deleteTodoItem(idItem: string) {
       const storeWindowMessage = useWindowMessages();
       const alert = useAlertComposable();
       try {
-        const response = await axios.delete(this.ApiAddress + "2/itsem/" + idItem);
+        const response = await axios.delete(this.ApiAddress + "2/item/" + idItem);
 
         if (response.status === 200) {
           console.log("success delete item 200");
@@ -84,7 +105,6 @@ export const useTodoStore = defineStore("todo", {
         }
       } catch (response) {
         const error = response as AxiosError<any>;
-
         alert.displayDangerAlert("Item has been not deleted.Try again");
         storeWindowMessage.addNewMessage("Item has been not deleted.Try again", {
           type: "danger"

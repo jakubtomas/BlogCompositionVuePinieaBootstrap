@@ -28,30 +28,35 @@
               :key="index"
               class="list-group-item"
               @click="selectItem(todo.id)">
-              {{ todo.title }}
+              {{ todo.id }} {{ todo.title }}
             </li>
           </ul>
-
-          <AddTodoItemForm></AddTodoItemForm>
         </div>
         <div class="col-8">
-          <div class="card" v-if="selectedTodoItem?.title">
+          <DetailsTodoItem
+            v-if="selectedTodoItem?.title"
+            :todo-item="selectedTodoItem"
+            @resetSelectedItem="resetSelectedTodoItem">
+          </DetailsTodoItem>
+          <!-- 
+            
+            <div class="card" v-if="selectedTodoItem?.title">
             <div class="card-header d-flex justify-content-around align-items-center">
               {{ selectedTodoItem?.title }}
               <div class="buttons">
                 <button
                   type="button"
                   class="btn btn-warning"
-                  @click="updateVisibilityForm()"
-                  v-if="!visibleEditFrom">
+                  @click="updateVisibilityEditForm()"
+                  v-if="!visibleEditForm">
                   update
                 </button>
 
                 <button
                   type="button"
                   class="btn btn-warning"
-                  @click="updateVisibilityForm()"
-                  v-if="visibleEditFrom">
+                  @click="updateVisibilityEditForm()"
+                  v-if="visibleEditForm">
                   close
                 </button>
 
@@ -64,15 +69,14 @@
               </div>
             </div>
             <div class="card-body">
-              <div v-if="!visibleEditFrom">
+              <div v-if="!visibleEditForm">
                 <h5 class="card-title">{{ selectedTodoItem?.title }}</h5>
                 <p class="card-text">
                   {{ selectedTodoItem?.text }}
                 </p>
               </div>
-              <!-- edit Form -->
 
-              <div v-if="visibleEditFrom">
+              <div v-if="visibleEditForm">
                 <form @submit.prevent="updateForm" class="container mt-4">
                   <div class="mb-3">
                     <label for="name" class="form-label">Title</label>
@@ -97,7 +101,8 @@
                 </form>
               </div>
             </div>
-          </div>
+          </div> -->
+          <AddTodoItemForm v-if="visibleAddForm"></AddTodoItemForm>
         </div>
       </div>
     </div>
@@ -108,28 +113,24 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import { useTodoStore } from "@/stores/todo";
 
-//src\components\TodoApp\addTodoItemForm.vue
 import AddTodoItemForm from "@/components/TodoApp/addTodoItemForm.vue";
+import DetailsTodoItem from "@/components/TodoApp/detailsTodoItem.vue";
 
 import { todoItem } from "@/interfaces/todoItem";
 import { useAlertComposable } from "@/composables/useAlert";
-//src\components\TodoApp\addTodoItem.vue
+
+import { useTodoStore } from "@/stores/todo";
+const store = useTodoStore();
 
 const router = useRouter();
-const store = useTodoStore();
 const alert = useAlertComposable();
 
-//const selectetItem = ref({});
-
-// const todoItems = computed<todoItem[]>(() => {
-//   return store.getTodoItems;
-// });
-
 const selectedTodoItem = ref<todoItem | undefined>({} as todoItem);
-const visibleEditFrom = ref(false);
+const visibleEditForm = ref(false);
+const visibleAddForm = ref(false);
 const isPopupVisible = ref(false);
+
 const { params } = useRoute();
 
 onMounted(async () => {
@@ -138,10 +139,11 @@ onMounted(async () => {
 
 const selectItem = (id: string) => {
   selectedTodoItem.value = store.getOneItem(id);
+  visibleAddForm.value = false;
 };
 
-const updateVisibilityForm = () => {
-  visibleEditFrom.value = !visibleEditFrom.value;
+const resetSelectedTodoItem = () => {
+  selectedTodoItem.value = undefined;
 };
 
 const updateVisibilityPopUpMessage = () => {
@@ -149,39 +151,20 @@ const updateVisibilityPopUpMessage = () => {
 };
 
 const displayFormAddItem = () => {
-  //
-};
-const showAlert = () => {
-  alert.displaySuccesAlert("hello world");
-};
-
-const updateForm = () => {
-  // update
-  const object: todoItem = {
-    id: selectedTodoItem.value?.id || "",
-    todoId: selectedTodoItem.value?.todoId || "",
-    done: false,
-    date: selectedTodoItem.value?.date || 55555,
-    title: selectedTodoItem.value?.title || "",
-    text: selectedTodoItem.value?.text || ""
-  };
-
-  store.updateTodoItem(object);
+  visibleAddForm.value = true;
+  selectedTodoItem.value = undefined;
 };
 
 const deleteTodoItem = () => {
   const idTodoItem = selectedTodoItem.value?.id || "";
 
   if (idTodoItem) {
-    store.deleteTodoItem(parseInt(idTodoItem as string));
+    store.deleteTodoItem(idTodoItem);
   }
   updateVisibilityPopUpMessage();
 };
 
 const redirectToCreateBlog = (): void => {
-  router.push("/addBlog");
-};
-const redirectToDetailsBlog = (todoItem: string): void => {
   router.push("/addBlog");
 };
 </script>
@@ -192,7 +175,7 @@ li:hover {
   background-color: #8de4ef;
 }
 button {
-  margin: 3px;
+  margin-bottom: 5px;
 }
 
 .text {
