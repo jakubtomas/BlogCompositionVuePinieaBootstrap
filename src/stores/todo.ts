@@ -3,6 +3,7 @@ import { todoItem } from "@/interfaces/todoItem";
 import axios, { AxiosError } from "axios";
 import { useWindowMessages } from "@/stores/windowMessage";
 import { useAlertComposable } from "@/composables/useAlert";
+import { useDateFunction } from "@/composables/dateFunctions";
 
 export const useTodoStore = defineStore("todo", {
   state: () => ({
@@ -30,16 +31,28 @@ export const useTodoStore = defineStore("todo", {
   },
   actions: {
     async fetchTodoItems() {
+      const storeWindowMessage = useWindowMessages();
+
       this.todoItems = {} as todoItem[];
 
       try {
         const { data } = await axios.get(this.ApiAddress + "2/item");
+
         this.todoItems = data;
+
+        // use function for format date composable
+
+        // this.todoItems = this.todoItems.map((object) => {
+        //   return { ...object, date: dateFormatter.formatDate(object.date) };
+        // });
       } catch (response) {
         const error = response as AxiosError<any>;
         console.log(error);
 
         useWindowMessages().addNewMessage("you got error", { type: "danger" });
+        storeWindowMessage.addNewMessage("The Todo list has not been loaded correctly.", {
+          type: "danger"
+        });
       }
     },
     async fetchOneItem() {
@@ -53,12 +66,21 @@ export const useTodoStore = defineStore("todo", {
       }
     },
     async addNewTodoItem(newItem: any) {
+      const storeWindowMessage = useWindowMessages();
+
       try {
         const { data } = await axios.post(this.ApiAddress + "2/item", newItem);
         console.log(data);
+        storeWindowMessage.addNewMessage("Item has been created.", {
+          type: "success"
+        });
         this.fetchTodoItems();
       } catch (response) {
         const error = response as AxiosError<any>;
+
+        storeWindowMessage.addNewMessage("Item has been not created.Try again", {
+          type: "danger"
+        });
       }
     },
     async updateTodoItem(newData: todoItem) {

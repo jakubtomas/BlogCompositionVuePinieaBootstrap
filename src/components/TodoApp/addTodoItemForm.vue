@@ -49,6 +49,7 @@ import { defineEmits, ref } from "vue";
 import { ErrorMessage, Field, Form as VForm } from "vee-validate";
 import { useTodoStore } from "@/stores/todo";
 import * as yup from "yup";
+import { useDateFunction } from "@/composables/dateFunctions";
 
 const store = useTodoStore();
 const title = ref();
@@ -59,10 +60,12 @@ const validationSchema = yup.object().shape({
   text: yup.string().required("Please enter some text").max(250)
 });
 
+const dateFunctions = useDateFunction();
+
 const addTodoItem = (): void => {
   const newTodoItem = {
     id: Math.floor(Math.random() * (100000 - 5 + 1) + 5),
-    date: 1685095164,
+    date: dateFunctions.returnDate(),
     todoId: 2,
     done: false,
     title: title.value,

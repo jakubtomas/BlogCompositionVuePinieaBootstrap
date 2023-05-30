@@ -1,14 +1,14 @@
 <template>
   <div class="hello">
-    <h1>Pinia</h1>
-    <h1>Made By Getters</h1>
+    <h2>Pinia example with mock data</h2>
+    <h5>Made By Getters</h5>
     <div v-for="user in getUsers" :key="user.id">
       {{ user.id }} {{ user.name }} {{ user.address }}
     </div>
-    <h1>Made By Actions</h1>
-    <!-- <div v-for="user in users" :key="user.id">
+    <h5>fetch data without using computed property</h5>
+    <div v-for="user in getUsers" :key="user.id">
       {{ user.id }} {{ user.name }} {{ user.address }}
-    </div> -->
+    </div>
   </div>
 </template>
 

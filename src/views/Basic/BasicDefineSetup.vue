@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <p>Basic View</p>
+    <p>basic component with script setup</p>
   </div>
 </template>
 

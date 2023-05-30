@@ -22,17 +22,24 @@
           <button type="button" class="btn btn-primary" @click="displayFormAddItem()">
             Add Item
           </button>
+
+          <h6>Todo Items List below</h6>
           <ul class="list-group">
             <li
               v-for="(todo, index) in store.getTodoItems"
               :key="index"
               class="list-group-item"
               @click="selectItem(todo.id)">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                v-model="todo.done"
+                @click="updateDoneStatus(todo.id, !todo.done)" />
               {{ todo.id }} {{ todo.title }}
             </li>
           </ul>
         </div>
-        <div class="col-8">
+        <div class="col-8 right-side">
           <DetailsTodoItem
             v-if="selectedTodoItem?.title"
             :todo-item="selectedTodoItem"
@@ -58,13 +65,15 @@ import { todoItem } from "@/interfaces/todoItem";
 import { useAlertComposable } from "@/composables/useAlert";
 
 import { useTodoStore } from "@/stores/todo";
+import { useDateFunction } from "@/composables/dateFunctions";
+
 const store = useTodoStore();
+const dateFunctions = useDateFunction();
 
 const router = useRouter();
 const alert = useAlertComposable();
 
 const selectedTodoItem = ref<todoItem | undefined>({} as todoItem);
-const visibleEditForm = ref(false);
 const visibleAddForm = ref(false);
 const isPopupVisible = ref(false);
 
@@ -92,6 +101,16 @@ const displayFormAddItem = () => {
   selectedTodoItem.value = undefined;
 };
 
+const updateDoneStatus = (idTodoItem: string, status: boolean) => {
+  const object: any = {
+    id: parseInt(idTodoItem as string),
+    done: status,
+    date: dateFunctions.returnDate()
+  };
+
+  store.updateTodoItem(object);
+};
+
 const deleteTodoItem = () => {
   const idTodoItem = selectedTodoItem.value?.id || "";
 
@@ -114,7 +133,9 @@ li:hover {
 button {
   margin-bottom: 5px;
 }
-
+.right-side {
+  margin-top: 50px;
+}
 .text {
   text-align: justify;
 }

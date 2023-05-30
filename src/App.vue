@@ -9,6 +9,7 @@
     <router-link to="/usersTableList">Users Table list</router-link> |
     <router-link to="/usersTableListV2">Users Table2</router-link> |
     <router-link to="/usersTableListV3">Users Table3</router-link> |
+    <router-link to="/routerLink">routerlink</router-link> |
     <router-link to="/propsEmit">propsEmit</router-link> |
     <router-link to="/vmodelmodelvalue">vmodelmodelValue</router-link> |
     <router-link to="/todoList">todoList</router-link> |

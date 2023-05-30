@@ -2,7 +2,9 @@
   <div>
     {{ props.todoItem }}
     <Card>
-      <template #cardTitleSlot> {{ props.todoItem?.title }} </template>
+      <template #cardTitleSlot>
+        {{ props.todoItem?.title }}
+      </template>
 
       <template #cardToolbarSlot>
         <button
@@ -29,6 +31,9 @@
       <template #cardBodySlot>
         <div v-if="!visibleEditForm">
           <h5 class="card-title">Title: {{ props.todoItem?.title }}</h5>
+          <p class="card-text">
+            Date: {{ dateFunctions.formatDate(parseInt(props.todoItem?.date as string)) }}
+          </p>
           <p class="card-text">Text: {{ props.todoItem?.text }}</p>
         </div>
 
@@ -77,12 +82,21 @@
 
 <script setup lang="ts">
 import Card from "@/components/CardGeneral.vue";
-import { defineEmits, defineProps, ref, type PropType, computed, watch } from "vue";
+import {
+  defineEmits,
+  defineProps,
+  ref,
+  type PropType,
+  computed,
+  watch,
+  onMounted
+} from "vue";
 import { ErrorMessage, Field, Form as VForm } from "vee-validate";
 import * as yup from "yup";
 import { todoItem } from "@/interfaces/todoItem";
 import Swal from "sweetalert2";
 import { useTodoStore } from "@/stores/todo";
+import { useDateFunction } from "@/composables/dateFunctions";
 
 const props = defineProps({
   title: {
@@ -97,23 +111,24 @@ const emit = defineEmits(["resetSelectedItem"]);
 const store = useTodoStore();
 
 const todoItemEdit = ref<todoItem>({} as todoItem);
-
 const title = ref("");
 const text = ref("");
-
-console.log();
-
 const visibleEditForm = ref(false);
+const dateFunctions = useDateFunction();
 
 const validationSchema = yup.object().shape({
   title: yup.string().required("Please enter a title").max(60),
   text: yup.string().required("Please enter some text").max(250)
 });
 
+onMounted(() => {
+  todoItemEdit.value = props.todoItem as todoItem;
+  title.value = todoItemEdit.value.title;
+  text.value = todoItemEdit.value.text;
+});
+
 const updateVisibilityEditForm = () => {
   visibleEditForm.value = !visibleEditForm.value;
-
-  //emit("updateVisibilityForm");
 };
 
 const displayPopUpMessage = () => {
@@ -137,24 +152,24 @@ const displayPopUpMessage = () => {
 };
 
 const updateTodoItem = () => {
+  const date = new Date();
+
   //const object: todoItem = {
   const object: any = {
     id: parseInt(todoItemEdit.value.id as string) || "",
     todoId: todoItemEdit.value.todoId,
     done: false,
-    date: todoItemEdit.value.date,
+    date: dateFunctions.returnDate(),
     title: title.value,
     text: text.value
   };
 
   store.updateTodoItem(object);
+  updateVisibilityEditForm();
 };
 watch(
   () => props.todoItem,
   (newProps) => {
-    console.log("Props Updated:", newProps);
-
-    // todo skontrolovat priradnie pre funkciu update todo item
     todoItemEdit.value = newProps || ({} as todoItem);
     title.value = newProps?.title || "";
     text.value = newProps?.text || "";
