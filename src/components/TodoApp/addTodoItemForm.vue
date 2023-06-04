@@ -8,7 +8,7 @@
       <template #cardBodySlot>
         <VForm @submit="addTodoItem" :validation-schema="validationSchema">
           <div class="mb-3">
-            <label for="exampleFormControlInput1" class="form-label">Tittle</label>
+            <label for="exampleFormControlInput1" class="form-label">Title</label>
             <Field
               type="text"
               class="form-control form-control-solid"

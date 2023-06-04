@@ -7,7 +7,10 @@
       display: block;
       font-family: monospace;
     ">
-    <div>UserTable list</div>
+    <div>
+      UserTable list pouzivanie , v-for pre riadky a stlpece s v-slot, zobrazenie pomocou
+      [key: string]:
+    </div>
   </code>
 
   <div class="container mt-5">
@@ -30,14 +33,19 @@
               <td>{{ user.attributes.created_at }}</td>
               <td></td>
             </tr> -->
+
+            <!-- tr su riadok , row  object user  -->
             <tr v-for="(user, index) in users" :key="index">
+              <!-- na kazdy riadok , mam stlpce s tableHeader, header je jeden stlpec  -->
               <td v-for="(header, j) in tableHeader" :key="j">
+                <!-- {{ header }} -->
                 <slot
                   :name="header.name"
                   :rowData="user"
                   :columnData="user[header.name]"
                   >{{ user[header.name] }}</slot
                 >
+                <!-- user object vytahujem header.name je napriklad first_name -->
               </td>
             </tr>
           </tbody>
@@ -110,47 +118,6 @@ export interface TableOrder {
 
 const { t } = useI18n();
 const name = ref(t("first_name"));
-
-const tableHeaderData = ref<HeaderItem[]>([] as HeaderItem[]);
-
-tableHeaderData.value = [
-  {
-    id: 1,
-    name: t("first_name"),
-    title: "first_name",
-    stringOrderBy: "first_name"
-  },
-  {
-    id: 2,
-    name: "last_name",
-    title: "last_name",
-    stringOrderBy: "last_name"
-  },
-  {
-    id: 3,
-    name: "email",
-    title: "email",
-    stringOrderBy: ""
-  },
-  {
-    id: 4,
-    name: "rank",
-    title: "rank",
-    stringOrderBy: "roles.name"
-  },
-  {
-    id: 5,
-    name: "date created",
-    title: "date created",
-    stringOrderBy: "created_at"
-  },
-  {
-    id: 6,
-    name: "mockString",
-    title: "mockString",
-    stringOrderBy: ""
-  }
-];
 
 const users = ref<{ [key: string]: any }[]>([
   {
@@ -260,71 +227,6 @@ const mockUsersData = {
       {
         url: null,
         label: "&laquo; Previous",
-        active: false
-      },
-      {
-        url: "https://mockUrl/users?page=1",
-        label: "1",
-        active: true
-      },
-      {
-        url: "https://mockUrl/users?page=2",
-        label: "2",
-        active: false
-      },
-      {
-        url: "https://mockUrl/users?page=3",
-        label: "3",
-        active: false
-      },
-      {
-        url: "https://mockUrl/users?page=4",
-        label: "4",
-        active: false
-      },
-      {
-        url: "https://mockUrl/users?page=5",
-        label: "5",
-        active: false
-      },
-      {
-        url: "https://mockUrl/users?page=6",
-        label: "6",
-        active: false
-      },
-      {
-        url: "https://mockUrl/users?page=7",
-        label: "7",
-        active: false
-      },
-      {
-        url: "https://mockUrl/users?page=8",
-        label: "8",
-        active: false
-      },
-      {
-        url: "https://mockUrl/users?page=9",
-        label: "9",
-        active: false
-      },
-      {
-        url: "https://mockUrl/users?page=10",
-        label: "10",
-        active: false
-      },
-      {
-        url: null,
-        label: "...",
-        active: false
-      },
-      {
-        url: "https://mockUrl/users?page=31",
-        label: "31",
-        active: false
-      },
-      {
-        url: "https://mockUrl/users?page=32",
-        label: "32",
         active: false
       },
       {

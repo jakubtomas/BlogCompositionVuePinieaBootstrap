@@ -30,7 +30,10 @@ export const useUserStore = defineStore("user", {
     ] as User[]
   }),
   getters: {
-    getUsers(state) {
+    // getUsers(state): User[] {
+    //   return state.users;
+    // },
+    returnUser: (state) => {
       return state.users;
     }
   },

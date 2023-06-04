@@ -1,7 +1,7 @@
 <template>
   <div class="child">
     <p>Model Value.vue component</p>
-
+    <!-- data modelValue dostanem pomocou props -->
     <input type="text" :value="modelValue" @input="updateValueFunction" v-bind="$attrs" />
     <h3>Parent value {{ modelValue }}</h3>
   </div>
@@ -18,6 +18,7 @@ const emit = defineEmits(["update:modelValue"]);
 
 const updateValueFunction = (event: any) => {
   console.log(event.target.value);
+  // akutilazacia dat
   emit("update:modelValue", event.target.value);
 };
 </script>

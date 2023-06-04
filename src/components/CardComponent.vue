@@ -4,7 +4,6 @@
       <h3 class="card-title">Title:{{ title }}</h3>
       <div class="card-toolbar">
         <button type="button" class="btn btn-warning btn-sm mx-2">Edit Blog</button>
-
         <button type="button" class="btn btn-danger btn-sm">Delete</button>
       </div>
     </div>
@@ -21,6 +20,7 @@
 
       <slot name="buttonSlots"><!-- slots with name  --></slot>
 
+      <!-- posielam property source do parent pomcou v bind -->
       <slot name="caption" v-bind:source="source">hello{{ source }}</slot>
     </div>
   </div>
@@ -29,7 +29,7 @@
 <script setup lang="ts">
 import { defineEmits, defineProps, ref } from "vue";
 // this component is only for learning
-// noto recomenedetion to use for app , you have card.vue for this
+// note recomenedetion to use for app , you have card.vue for this
 const emit = defineEmits(["sendMessageToParent"]);
 
 const props = defineProps({

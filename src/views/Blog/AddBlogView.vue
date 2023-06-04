@@ -2,10 +2,10 @@
   <div class="container">
     <div class="row">
       <div class="col-12">
-        <h1 class="mb-2">Add new blog</h1>
+        <h1 class="mb-2">Add new bloog</h1>
         <VForm @submit="addBlog" :validation-schema="validationSchema">
           <div class="mb-3">
-            <label for="exampleFormControlInput1" class="form-label">Tittle</label>
+            <!-- <label for="exampleFormControlInput1" class="form-label">Tittle</label>
             <Field
               type="text"
               class="form-control form-control-solid"
@@ -16,7 +16,11 @@
             <div class="error">
               <ErrorMessage name="title" />
             </div>
+          -->
+            <!-- prepojenie hodnoty cez v model  -->
+            <InputComponent name="title" label="title" v-model="title" />
           </div>
+
           <!--  -->
           <div class="mb-3">
             <label for="exampleFormControlTextarea1" class="form-label">Text</label>
@@ -42,9 +46,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, defineProps, defineEmits } from "vue";
 import { useRouter } from "vue-router";
 import { useBlogStore } from "@/stores/blog";
+//src\components\Form\FormInput.vue
+import InputComponent from "@/components/Form/FormInput.vue";
+
 import { ErrorMessage, Field, Form as VForm } from "vee-validate";
 
 import { Blog } from "@/interfaces/blog";
@@ -55,13 +62,14 @@ export default defineComponent({
   components: {
     ErrorMessage,
     Field,
-    VForm
+    VForm,
+    InputComponent
   },
   setup() {
     const router = useRouter();
     const store = useBlogStore();
-    const title = ref();
-    const text = ref();
+    const title = ref("");
+    const text = ref("");
     const blogs = ref<Blog[]>([] as Blog[]);
 
     const validationSchema = yup.object().shape({
@@ -77,6 +85,8 @@ export default defineComponent({
         title: title.value,
         text: text.value
       };
+      console.log(newBlog);
+      return;
       store.addBlog(newBlog);
       router.push("/blog");
     };

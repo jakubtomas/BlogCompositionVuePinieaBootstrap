@@ -33,7 +33,6 @@
 
 <script setup lang="ts">
 import { computed, defineProps, defineEmits, ref } from "vue";
-//import { Pagination } from "./DataTable.vue";
 
 export interface Pagination {
   current_page: number;
@@ -50,12 +49,12 @@ const setPage = (newPage: number) => {
 };
 
 const pageNumbers = computed(() => {
-  const result = getPageButtons(currentPage.value, props.last_page);
+  const result = getButtonsPagination(currentPage.value, props.last_page);
   return result;
 });
 
 // eslint-disable-next-line
-const getPageButtons = (currentPage: number = 1, totalPage: number = 1) => {
+const getButtonsPagination = (currentPage: number = 1, totalPage: number = 1) => {
   const pageNumbers = [];
 
   pageNumbers.push(1);

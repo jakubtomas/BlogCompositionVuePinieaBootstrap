@@ -1,6 +1,6 @@
 <template>
   <code>
-    <div>UserTable list 3</div>
+    <div>UserTable 3 , Pouzivanie DataTable component, props, emits functions</div>
   </code>
 
   <DataTable

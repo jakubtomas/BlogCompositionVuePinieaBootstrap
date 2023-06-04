@@ -73,9 +73,14 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/RouterLink.vue"),
     children: [
       {
-        path: "/routerchild",
+        path: "",
         name: "routerchild",
         component: () => import("../views/PropsEmit.vue")
+      },
+      {
+        path: "/basicInfo/:id",
+        name: "basicInfo",
+        component: () => import("@/components/RouterComponents/detailsInfo.vue")
       }
     ]
   },

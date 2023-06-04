@@ -1,13 +1,9 @@
 <template>
-  <code
-    style="
-      background-color: #f5f5f5;
-      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-      padding: 10px;
-      display: block;
-      font-family: monospace;
-    ">
-    <div>UserTable list</div>
+  <code class="instruction">
+    <div>
+      UserTable list , zakladna tabulka, vypis dat v-for, basic pagination not working
+      correctly
+    </div>
   </code>
 
   <div class="container mt-5">
@@ -61,6 +57,7 @@
         <nav aria-label="Page navigation example">
           <ul class="pagination">
             <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+            <!-- vypisovanie vsetkych cisel -->
             <!-- <li
               class="page-item"
               v-for="page in mockUsersData.meta.total"
@@ -251,71 +248,6 @@ const mockUsersData = {
         active: false
       },
       {
-        url: "https://mockUrl/users?page=1",
-        label: "1",
-        active: true
-      },
-      {
-        url: "https://mockUrl/users?page=2",
-        label: "2",
-        active: false
-      },
-      {
-        url: "https://mockUrl/users?page=3",
-        label: "3",
-        active: false
-      },
-      {
-        url: "https://mockUrl/users?page=4",
-        label: "4",
-        active: false
-      },
-      {
-        url: "https://mockUrl/users?page=5",
-        label: "5",
-        active: false
-      },
-      {
-        url: "https://mockUrl/users?page=6",
-        label: "6",
-        active: false
-      },
-      {
-        url: "https://mockUrl/users?page=7",
-        label: "7",
-        active: false
-      },
-      {
-        url: "https://mockUrl/users?page=8",
-        label: "8",
-        active: false
-      },
-      {
-        url: "https://mockUrl/users?page=9",
-        label: "9",
-        active: false
-      },
-      {
-        url: "https://mockUrl/users?page=10",
-        label: "10",
-        active: false
-      },
-      {
-        url: null,
-        label: "...",
-        active: false
-      },
-      {
-        url: "https://mockUrl/users?page=31",
-        label: "31",
-        active: false
-      },
-      {
-        url: "https://mockUrl/users?page=32",
-        label: "32",
-        active: false
-      },
-      {
         url: "https://mockUrl/users?page=2",
         label: "Next &raquo;",
         active: false
@@ -343,14 +275,6 @@ let displaySpinner = ref(false);
 onMounted(() => {
   fetchUsersData();
 });
-const searchText = debounce((searchText: string) => {
-  searchInput.value = searchText;
-  tableOrder.value.sortOrder = "asc";
-  tableOrder.value.orderBy = "";
-  page = 1;
-
-  fetchUsersData();
-}, 250);
 
 const fetchUsersData = () => {
   //API for fetching data with parameter
@@ -363,11 +287,16 @@ const fetchUsersData = () => {
     search: searchInput.value
   };
 
-  //maybe create store with this function ,
-  // or create global file for API ,, with AXIOS
-  // await userStore.getUsersData(params)
   displaySpinner.value = false;
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.instruction {
+  background-color: #f5f5f5;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  padding: 10px;
+  display: block;
+  font-family: monospace;
+}
+</style>

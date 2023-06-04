@@ -1,5 +1,7 @@
 <template>
   <div>Props Emit Slots, template send data</div>
+
+  <code> posielanie input parametre, </code>
   <CardComponent
     @send-message-to-parent="catchChildData"
     :title="'Title text'"
@@ -16,6 +18,7 @@
       <h4>slots buttonSlots</h4>
     </template>
 
+    <!-- source su data s slots  string source child -->
     <template #caption="{ source }">
       <br />
       <button>template button {{ source }}</button>
@@ -28,7 +31,6 @@ import CardComponent from "@/components/CardComponent.vue";
 import { ref } from "vue";
 
 const buttonTextRef = ref("send button parent");
-const idUser = ref(4);
 
 const catchChildData = (childData: any) => {
   console.log(childData);

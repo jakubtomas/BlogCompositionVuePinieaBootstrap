@@ -8,6 +8,7 @@
     </code>
     <!-- center element  -->
     <div class="d-flex align-items-center justify-content-center">
+      <!-- prepojenie v model cez hodnotu name , property name  -->
       <ModelValue v-model="name"></ModelValue>
     </div>
 
