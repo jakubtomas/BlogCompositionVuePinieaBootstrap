@@ -1,7 +1,10 @@
 <template>
   <div>Props Emit Slots, template send data</div>
 
-  <code> posielanie input parametre, </code>
+  <code>
+    posielanie input parametre, Preposielanie dat s child componentu , slots posielanie
+    data do casit componentu , pouzitie v bind source na vratenie dat do rodica
+  </code>
   <CardComponent
     @send-message-to-parent="catchChildData"
     :title="'Title text'"
@@ -22,8 +25,12 @@
     <template #caption="{ source }">
       <br />
       <button>template button {{ source }}</button>
+      <br />
+      v-bind source data {{ source }}
     </template>
   </CardComponent>
+
+  child data are :{{ childComponentData }}
 </template>
 
 <script setup lang="ts">
@@ -32,9 +39,11 @@ import { ref } from "vue";
 
 const buttonTextRef = ref("send button parent");
 
+const childComponentData = ref("");
 const catchChildData = (childData: any) => {
   console.log(childData);
-  //
+
+  childComponentData.value = childData;
 };
 </script>
 

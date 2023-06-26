@@ -47,7 +47,7 @@ const props = defineProps({
   }
 });
 
-const source = ref("source child ");
+const source = ref(" string from child reactive i think");
 
 //send data to parent
 const clickButton = (parameter: string) => {

@@ -100,6 +100,11 @@ const routes: Array<RouteRecordRaw> = [
     name: "todoList",
     component: () => import("../views/TodoApp/todoList.vue")
   },
+  {
+    path: "/todoList2/",
+    name: "todoList2",
+    component: () => import("../views/TodoApp/todoList2.vue")
+  },
   { path: "/:pathMatch(.*)*", redirect: "/" }
 ];
 

@@ -1,5 +1,5 @@
 <template>
-  <code>Aplikacia s Pinia uloziskom </code>
+  <code>Todo app s PInia ale s inym typom uloziskoa pomocou computed property</code>
   <div class="pop">
     <div v-if="isPopupVisible" class="popup">
       <div class="popup-message">
@@ -51,12 +51,13 @@
         </div>
       </div>
     </div>
+    <div>sleduj tvoje data kamo : {{ todoItemsComputed }}</div>
     <!--  -->
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
 
 import AddTodoItemForm from "@/components/TodoApp/addTodoItemForm.vue";
@@ -65,27 +66,24 @@ import DetailsTodoItem from "@/components/TodoApp/detailsTodoItem.vue";
 import { todoItem } from "@/interfaces/todoItem";
 import { useAlertComposable } from "@/composables/useAlert";
 
-import { useTodoStore } from "@/stores/todo";
+import { useTodo2Store } from "@/stores/todo2";
 import { useDateFunction } from "@/composables/dateFunctions";
 
-const store = useTodoStore();
+const store = useTodo2Store();
 const dateFunctions = useDateFunction();
 
-const router = useRouter();
-const alert = useAlertComposable();
+const todoItemsComputed = computed(() => store.todoItems);
 
 const selectedTodoItem = ref<todoItem | undefined>({} as todoItem);
 const visibleAddForm = ref(false);
 const isPopupVisible = ref(false);
-
-const { params } = useRoute();
 
 onMounted(async () => {
   await store.fetchTodoItems();
 });
 
 const selectItem = (id: string) => {
-  selectedTodoItem.value = store.getOneItem(id);
+  //selectedTodoItem.value = store.getOneItem(id);
   visibleAddForm.value = false;
 };
 
@@ -109,20 +107,16 @@ const updateDoneStatus = (idTodoItem: string, status: boolean) => {
     date: dateFunctions.returnDate()
   };
 
-  store.updateTodoItem(object);
+  //store.updateTodoItem(object);
 };
 
 const deleteTodoItem = () => {
   const idTodoItem = selectedTodoItem.value?.id || "";
 
   if (idTodoItem) {
-    store.deleteTodoItem(idTodoItem);
+    // store.deleteTodoItem(idTodoItem);
   }
   updateVisibilityPopUpMessage();
-};
-
-const redirectToCreateBlog = (): void => {
-  router.push("/addBlog");
 };
 </script>
 

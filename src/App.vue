@@ -13,6 +13,7 @@
     <router-link to="/propsEmit">propsEmit</router-link> |
     <router-link to="/vmodelmodelvalue">vmodelmodelValue</router-link> |
     <router-link to="/todoList">todoList</router-link> |
+    <router-link to="/todoList2">todoList2</router-link> |
   </nav>
   <code v-if="store.getMessages.length > 0">
     <div :class="'alert alert-' + store.getTypeMessage" role="alert">
